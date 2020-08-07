@@ -1,47 +1,27 @@
 # downloadable imports:
-import sqlite3
+import pymongo
+from pymongo import MongoClient
+
+client = MongoClient("mongodb+srv://mongouser:O6TYkZnXi39z@cluster0.fapa8.mongodb.net/client.test?retryWrites=true&w=majority")
+db = client['test']
+posts = db.posts
 
 
 def get_photo_id(user_id):
-    conn = sqlite3.connect('users.db')
-    c = conn.cursor()
-    c.execute(f'''SELECT PhotoId FROM users WHERE UserId = {user_id}''')
-    return_value = c.fetchone()
-    conn.close()
-    return return_value[0]
+    return posts.find_one({"telegram_id": user_id}).get('photo_id')
 
 
 def get_name(user_id):
-    conn = sqlite3.connect('users.db')
-    c = conn.cursor()
-    c.execute(f'''SELECT Name FROM users WHERE UserId = {user_id}''')
-    return_value = c.fetchone()
-    conn.close()
-    return return_value[0]
+    return posts.find_one({"telegram_id": user_id}).get('name')
 
 
 def get_company(user_id):
-    conn = sqlite3.connect('users.db')
-    c = conn.cursor()
-    c.execute(f'''SELECT Company FROM users WHERE UserId = {user_id}''')
-    return_value = c.fetchone()
-    conn.close()
-    return return_value[0]
+    return posts.find_one({"telegram_id": user_id}).get('company')
 
 
 def get_lfwhat(user_id):
-    conn = sqlite3.connect('users.db')
-    c = conn.cursor()
-    c.execute(f'''SELECT LfWhat FROM users WHERE UserId = {user_id}''')
-    return_value = c.fetchone()
-    conn.close()
-    return return_value[0]
+    return posts.find_one({"telegram_id": user_id}).get('lfwhat')
 
 
 def get_skills(user_id):
-    conn = sqlite3.connect('users.db')
-    c = conn.cursor()
-    c.execute(f'''SELECT Skills FROM users WHERE UserId = {user_id}''')
-    return_value = c.fetchone()
-    conn.close()
-    return return_value[0]
+    return posts.find_one({"telegram_id": user_id}).get('skills')

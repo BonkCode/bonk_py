@@ -1,30 +1,22 @@
 # downloadable imports:
-import sqlite3
+import pymongo
+from pymongo import MongoClient
 # local imports:
 from state import State
 
+client = MongoClient("mongodb+srv://mongouser:O6TYkZnXi39z@cluster0.fapa8.mongodb.net/client.test?retryWrites=true&w=majority")
+db = client['test']
+posts = db.posts
 
-def update_state(user_id, state_text, bot_message_text):
-    stateconn = sqlite3.connect('bot_state.db')
-    statec = stateconn.cursor()
-    statec.execute(f'''SELECT * FROM states WHERE UserId = {user_id}''')
-    if statec.fetchone():
-        statec.execute(f'''UPDATE states SET State="{state_text}", LastBotMessage = "{bot_message_text}" WHERE UserId = {user_id}''')
-        stateconn.commit()
-        stateconn.close()
-        return
-    statec.execute(f'''INSERT INTO states VALUES ('{user_id}', '{state_text}', '{bot_message_text}')''')
-    stateconn.commit()
-    stateconn.close()
+def update_state(user_id, state_text):
+	posts.update_one({"telegram_id": user_id}, {"$set": {"bot_state": state_text}})
+
 
 
 def get_state(user_id):
-    stateconn = sqlite3.connect('bot_state.db')
-    statec = stateconn.cursor()
-    statec.execute(f'''SELECT * FROM states WHERE UserId = {user_id}''')
-    fetch = statec.fetchone()
-    if not fetch:
-        update_state(user_id, 'error', 'none')
-    bot_state = State(fetch[0], fetch[1], fetch[2])
-    stateconn.close()
-    return bot_state
+	fetch = posts.find_one({"telegram_id": user_id})
+	if not fetch:
+		return None
+	bot_state = State(fetch.get('telegram_id'), fetch.get('bot_state'))
+	print (bot_state.state_text)
+	return bot_state

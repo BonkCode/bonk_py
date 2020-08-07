@@ -1,8 +1,7 @@
 class State:
-    def __init__(self, user_id, state_text, last_bot_message):
+    def __init__(self, user_id, state_text):
         self.user_id = user_id
         self.state_text = state_text
-        self.last_bot_message = last_bot_message
 
 
 # STATES:
