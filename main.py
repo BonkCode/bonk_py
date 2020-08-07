@@ -11,10 +11,10 @@ from user_db_updates import *
 from user_data_handler import *
 from bot_db_manager import *
 
-client = MongoClient("mongodb+srv://mongouser:O6TYkZnXi39z@cluster0.fapa8.mongodb.net/client.test?retryWrites=true&w=majority")
+client = MongoClient("mongo db")
 db = client['test']
 posts = db.posts
-bot = telebot.TeleBot(token="1319956764:AAH7-bJJyOHG3MkRc7tB1He7FrIJ5XTXTu0")
+bot = telebot.TeleBot(token="token")
 
 
 # telegram_id : string
