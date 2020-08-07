@@ -2,7 +2,7 @@
 import pymongo
 from pymongo import MongoClient
 
-client = MongoClient("mongodb+srv://mongouser:O6TYkZnXi39z@cluster0.fapa8.mongodb.net/client.test?retryWrites=true&w=majority")
+client = MongoClient("")
 db = client['test']
 posts = db.posts
 
